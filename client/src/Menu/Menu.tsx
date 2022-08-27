@@ -1,7 +1,4 @@
-import { stat } from "fs";
 import React from "react";
-import { CardList } from "react-bootstrap-icons";
-import { json } from "stream/consumers";
 import Card, { CardType } from "../Card/Card";
 import Title from "../Title/Title";
 import "./Menu.css";
@@ -15,7 +12,7 @@ interface MenuProps {
 interface MenuState {
   display: displayMode;
   cards: Array<CardType>;
-  cardsDisplay: Array<CardType>;
+  filteredByCategory: Array<CardType>;
   selectedCategory: string;
   categories: Array<string>;
 }
@@ -26,7 +23,7 @@ class Menu extends React.Component<MenuProps, MenuState> {
     this.state = {
       display: props.defaultDisplay,
       cards: [],
-      cardsDisplay: [],
+      filteredByCategory: [],
       selectedCategory: "all",
       categories: ["all", "Chicken", "Pizza", "Meat"],
     };
@@ -38,7 +35,7 @@ class Menu extends React.Component<MenuProps, MenuState> {
       .then((json) => {
         this.setState(() => ({
           cards: json,
-          cardsDisplay: json,
+          filteredByCategory: json,
         }));
       });
   }
@@ -57,14 +54,15 @@ class Menu extends React.Component<MenuProps, MenuState> {
       return card.category === selected;
     });
     this.setState((state, props) => ({
-      cardsDisplay: selected === "all" ? cards : filtered,
+      filteredByCategory: selected === "all" ? cards : filtered,
       selectedCategory: selected,
     }));
   };
 
   render() {
     //conditional rendering - if no dishes display an empty page
-    if (this.state.cardsDisplay.length === 0) return <p>No dishes in Menu!</p>;
+    if (this.state.filteredByCategory.length === 0)
+      return <p>No dishes in Menu!</p>;
     return (
       <>
         <Title text="Order Delivery or Takeaway"></Title>
@@ -100,7 +98,7 @@ class Menu extends React.Component<MenuProps, MenuState> {
         </div>
 
         <div className={this.state.display}>
-          {this.state.cardsDisplay.map((card) => (
+          {this.state.filteredByCategory.map((card) => (
             <Card
               key={card._id}
               data={card}
