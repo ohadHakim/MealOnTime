@@ -18,17 +18,6 @@ interface MenuState {
 }
 
 function Menu(props: MenuProps) {
-  // constructor(props: MenuProps) {
-  //   super(props);
-  //   this.state = {
-  //     display: props.defaultDisplay,
-  //     cards: [],
-  //     filteredByCategory: [],
-  //     selectedCategory: "all",
-  //     categories: ["all", "Chicken", "Pizza", "Meat"],
-  //   };
-  // }
-
   const [display, setDisplay] = useState<displayMode>(props.defaultDisplay);
   const [cards, setCards] = useState<Array<CardType>>([]);
   const [filteredByCategory, setFilteredByCategory] = useState<Array<CardType>>(
@@ -51,17 +40,6 @@ function Menu(props: MenuProps) {
       });
   });
 
-  // componentDidMount() {
-  //   fetch("http://localhost:3100/cards")
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       this.setState(() => ({
-  //         cards: json,
-  //         filteredByCategory: json,
-  //       }));
-  //     });
-  // }
-
   function changeDisplay(mode: displayMode) {
     setDisplay(mode);
 
@@ -74,10 +52,7 @@ function Menu(props: MenuProps) {
     const filtered = cards.filter((card) => {
       return card.category === selected;
     });
-    // this.setState((state, props) => ({
-    //   filteredByCategory: selected === "all" ? cards : filtered,
-    //   selectedCategory: selected,
-    // }));
+
     const byCategory = selected === "all" ? cards : filtered;
     setFilteredByCategory(byCategory);
     setSelectedCategory(selected);
